@@ -524,6 +524,8 @@ function buildPlan(scenario, a) {
       add("agora", "pa2", "Ligue para o banco ou emissor do cartão, conteste a compra e, se os dados do cartão foram expostos, peça o bloqueio e um cartão novo.");
     if (has("metodo", "boleto") || has("metodo", "ted"))
       add("agora", "pa3", "Avise imediatamente o seu banco sobre o pagamento. A reversão é difícil, mas o banco registra a fraude e pode orientar os próximos passos.");
+    if (has("metodo", "outro"))
+      add("agora", "pa_outro", "Para dinheiro, recarga ou outro meio, o caminho principal é reunir provas e registrar o boletim de ocorrência. Se o valor passou por alguma conta ou serviço (lotérica, correspondente, aplicativo), avise também essa instituição pelos canais oficiais.");
     if (has("extra", "dados"))
       add("agora", "pa4", "Como você também passou dados ou senha, troque as senhas envolvidas agora e avise o banco para monitorar sua conta. (Ao terminar este plano, refaça a triagem escolhendo “Passei senha, código ou dados”.)");
     if (has("extra", "contato"))

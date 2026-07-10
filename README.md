@@ -27,4 +27,7 @@ SOS Golpe é uma ferramenta educativa. Não confirma fraudes, não garante recup
 
 ## Desenvolvimento
 
-Não há etapa de build. Edite `index.html` e abra-o diretamente no navegador. Antes de publicar, percorra o roteiro de testes manuais registrado no [`COLLAB.md`](COLLAB.md).
+Não há etapa de build. Edite `index.html` e abra-o diretamente no navegador. Antes de publicar:
+
+1. Rode `node tools/check.mjs` — verificação automatizada (estrutura do HTML, referências e lógica dos planos) que usa apenas Node, sem instalar nada.
+2. Percorra o roteiro de testes manuais registrado no [`COLLAB.md`](COLLAB.md), de preferência em um celular.
