@@ -330,7 +330,7 @@
       <ul>
         <li><strong>Urgência e pressão:</strong> "só hoje", "sua conta será bloqueada em minutos". Quem é legítimo pode esperar.</li>
         <li><strong>Pedido de sigilo:</strong> "não conte para ninguém". Golpistas isolam a vítima de propósito.</li>
-        <li><strong>Pix, código ou senha:</strong> nenhum banco, empresa ou órgão pede senha ou código de verificação por telefone ou mensagem.</li>
+        <li><strong>Código ou senha:</strong> serviços podem enviar códigos de verificação, mas você não deve repassá-los a alguém por ligação ou mensagem. Senhas também não devem ser informadas.</li>
         <li><strong>Oferta boa demais:</strong> renda fácil, prêmio inesperado, produto muito abaixo do preço.</li>
         <li><strong>Link ou app fora do oficial:</strong> endereços parecidos com o verdadeiro, mas com letras trocadas, ou pedido para instalar app "de segurança".</li>
         <li><strong>Familiar com número novo:</strong> "troquei de número, me faz um Pix?" — confirme sempre ligando para o número antigo.</li>
@@ -426,7 +426,7 @@ const SCENARIOS = {
           { v: "pix", l: "Pix" },
           { v: "cartao", l: "Cartão de crédito ou débito" },
           { v: "boleto", l: "Boleto" },
-          { v: "ted", l: "TED, DOC ou depósito" },
+          { v: "ted", l: "Transferência bancária ou depósito" },
           { v: "outro", l: "Dinheiro ou outro meio" },
         ],
       },
@@ -532,7 +532,7 @@ function buildPlan(scenario, a) {
     if (has("quem", "familiar"))
       add("agora", "na4", "Ligue para o número antigo da pessoa (ou faça uma chamada de vídeo) antes de qualquer coisa. 'Troquei de número, me faz um Pix' é um golpe muito comum.");
     if (has("quem", "governo"))
-      add("agora", "na5", "Órgãos públicos não cobram por mensagem nem pedem Pix. Confirme digitando você mesmo o endereço oficial (gov.br) ou pelo app oficial do órgão.");
+      add("agora", "na5", "Não pague uma cobrança de suposto órgão público recebida por mensagem sem conferir. Digite você mesmo o endereço oficial (gov.br) ou use o app oficial do órgão; não compartilhe senha nem código de verificação.");
     if (has("quem", "empresa"))
       add("agora", "na6", "Consulte seu pedido ou fatura diretamente no site ou app oficial da empresa, digitando o endereço você mesmo.");
     if (has("quem", "emprego"))
@@ -595,7 +595,7 @@ function buildPlan(scenario, a) {
     add("hoje", "dh3", "Guarde as provas: prints da conversa, do site ou do app, números e e-mails usados pelo golpista.");
     add("depois", "dd1", "Registre um boletim de ocorrência online (busque por “delegacia eletrônica” + seu estado), principalmente se houver qualquer movimentação ou conta aberta em seu nome.");
     if (has("oque", "docs"))
-      add("depois", "dd2", "Considere ativar alertas de uso do seu CPF nos serviços gratuitos dos birôs de crédito (Serasa, SPC) para ser avisado de consultas e novas dívidas.");
+      add("depois", "dd2", "Consulte nos birôs de crédito (como Serasa e SPC) quais alertas de uso do CPF estão disponíveis para avisar sobre consultas e novas dívidas. Confira antes se o serviço escolhido é gratuito ou pago.");
     add("depois", "dd3", "Fique atento nas próximas semanas: quem tem seus dados pode tentar novos golpes se passando por banco ou polícia. Na dúvida, desligue e ligue você mesmo para o canal oficial.");
   }
 

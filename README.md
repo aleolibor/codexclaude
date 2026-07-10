@@ -1,6 +1,6 @@
 # SOS Golpe
 
-Uma página offline que ajuda a organizar os próximos passos após um contato suspeito, pagamento fraudulento ou exposição de senhas e dados.
+Uma página offline que ajuda a organizar os próximos passos após contato suspeito, pagamento fraudulento, exposição de senhas e dados, ameaça ou chantagem.
 
 O projeto não tenta decidir se algo é golpe. Ele apresenta orientações educativas em ordem de urgência e lembra a pessoa de confirmar tudo por canais oficiais encontrados de forma independente.
 
