@@ -290,6 +290,11 @@
 </header>
 
 <main>
+  <noscript>
+    <div class="notice" role="alert">
+      <strong>Esta página precisa de JavaScript.</strong> Ative o JavaScript no navegador e abra o arquivo novamente. Nenhuma resposta é enviada para servidores.
+    </div>
+  </noscript>
   <div class="notice" role="note">
     <strong>Importante:</strong> esta página não confirma se algo é ou não é golpe e não substitui
     orientação oficial. Sempre confirme informações pelos canais oficiais que <em>você mesmo</em>
@@ -403,7 +408,7 @@ const SCENARIOS = {
           { v: "link", l: "Clicar em link ou instalar aplicativo" },
           { v: "dados", l: "Senha, código de verificação ou dados pessoais" },
           { v: "urgencia", l: "Urgência ou segredo ('é pra agora', 'não conta pra ninguém')" },
-          { v: "nada", l: "Nada ainda, só acho estranho" },
+          { v: "nada", l: "Nada ainda, só acho estranho", exclusive: true },
         ],
       },
     ],
@@ -511,6 +516,8 @@ function buildPlan(scenario, a) {
 
   if (scenario === "paguei") {
     add("agora", "pa0", "Respire. Agir com método aumenta suas chances. A culpa não é sua: golpistas são profissionais em enganar.");
+    if (!a.metodo)
+      add("agora", "pa_generic", "Se você não tem certeza de como o pagamento foi feito, consulte seu extrato e contate imediatamente a instituição ou serviço por onde o dinheiro saiu, usando apenas o app, site ou telefone oficial.");
     if (has("metodo", "pix"))
       add("agora", "pa1", "Abra o app oficial do seu banco, localize a transação Pix e use a opção de contestar para acionar o MED — Mecanismo Especial de Devolução. Se não encontrar, use o atendimento dentro do app ou o número oficial do banco. O pedido pode ser feito em até 80 dias, mas agir rápido aumenta a chance de recuperar algum valor; a devolução não é garantida.");
     if (has("metodo", "cartao"))
@@ -538,13 +545,15 @@ function buildPlan(scenario, a) {
     if (has("oque", "senha_banco"))
       add("agora", "da1", "Ligue para o banco imediatamente (app oficial ou número no verso do cartão): avise o ocorrido, troque a senha e peça verificação de movimentações e tentativas de acesso.");
     if (has("oque", "codigo"))
-      add("agora", "da2", "Seu WhatsApp pode ser clonado: abra o app e entre novamente com seu número para retomar a conta. Depois ative a confirmação em duas etapas (Configurações → Conta). Avise seus contatos para não fazerem Pix “para você”.");
+      add("agora", "da2", "Sua conta do WhatsApp pode ser tomada: abra o app e entre novamente com seu número para retomar a conta. Depois ative a confirmação em duas etapas (Configurações → Conta). Avise seus contatos para não fazerem Pix “para você”.");
     if (has("oque", "cartao"))
       add("agora", "da3", "Bloqueie o cartão pelo app do banco e peça um novo. Se não conseguir pelo app, ligue para o número no verso do cartão.");
     if (has("oque", "senha_email"))
       add("agora", "da4", "Troque a senha agora, começando pelo e-mail (é ele que recupera as outras contas). Depois ative a verificação em duas etapas e encerre as sessões abertas em outros aparelhos.");
     if (has("oque", "app"))
       add("agora", "da5", "Ative o modo avião e desligue o Wi‑Fi para interromper possível acesso remoto. Usando outro aparelho confiável, avise o banco e troque primeiro a senha do e-mail e depois as senhas financeiras. Só então remova o app suspeito; se o aparelho continuar estranho, procure suporte técnico confiável antes de voltar a usá-lo para banco.");
+    if (!Array.isArray(a.oque) || !a.oque.length)
+      add("agora", "da_generic", "Se não sabe exatamente o que foi exposto, use outro aparelho confiável para avisar seu banco e proteger primeiro o e-mail — ele costuma ser usado para recuperar as demais contas.");
     if (has("oque", "docs"))
       add("hoje", "dh1", "Com seu CPF em mãos, golpistas tentam abrir contas e dívidas. Consulte o Registrato, sistema gratuito do Banco Central (registrato.bcb.gov.br), para ver contas e empréstimos no seu nome.");
     add("hoje", "dh2", "Troque também senhas parecidas usadas em outros serviços — golpistas testam a mesma senha em vários lugares.");
@@ -620,6 +629,20 @@ function renderQuestions() {
       input.checked = q.type === "multi"
         ? Array.isArray(saved) && saved.includes(opt.v)
         : saved === opt.v;
+      if (opt.exclusive) input.dataset.exclusive = "true";
+      if (q.type === "multi") {
+        input.addEventListener("change", () => {
+          if (!input.checked) return;
+          const checked = [...fs.querySelectorAll('input[type="checkbox"]:checked')];
+          if (input.dataset.exclusive === "true") {
+            checked.forEach(other => { if (other !== input) other.checked = false; });
+          } else {
+            checked.forEach(other => {
+              if (other.dataset.exclusive === "true") other.checked = false;
+            });
+          }
+        });
+      }
       const span = document.createElement("span");
       span.textContent = opt.l;
       lab.appendChild(input);
