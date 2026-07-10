@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="SOS Golpe — triagem e plano de ação contra fraudes digitais. Funciona offline, nada sai do seu aparelho.">
+<title>SOS Golpe — o que fazer agora</title>
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --card: #ffffff;
+    --text: #1a2233;
+    --muted: #5a6478;
+    --accent: #0b57d0;
+    --accent-text: #ffffff;
+    --danger: #b3261e;
+    --danger-bg: #fdeeee;
+    --ok: #146c2e;
+    --ok-bg: #e6f4ea;
+    --warn-bg: #fff4e0;
+    --warn-border: #e8a13d;
+    --border: #d7dce5;
+    --radius: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12151c;
+      --card: #1c2029;
+      --text: #e8eaf0;
+      --muted: #9aa3b5;
+      --accent: #8ab4f8;
+      --accent-text: #0c1117;
+      --danger: #f2b8b5;
+      --danger-bg: #3a2224;
+      --ok: #81c995;
+      --ok-bg: #1e2f24;
+      --warn-bg: #33290f;
+      --warn-border: #c9973a;
+      --border: #3a4152;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { font-size: 17px; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+  }
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1rem 1rem 4rem;
+  }
+  header.site {
+    text-align: center;
+    padding: 1.5rem 1rem 0.5rem;
+  }
+  header.site h1 {
+    margin: 0 0 0.25rem;
+    font-size: 1.9rem;
+    letter-spacing: -0.5px;
+  }
+  header.site p.tagline {
+    margin: 0;
+    color: var(--muted);
+    font-size: 1.05rem;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    margin-top: 1rem;
+  }
+  .notice {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    border-radius: var(--radius);
+    padding: 0.85rem 1rem;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+  }
+  .privacy {
+    color: var(--muted);
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 0.75rem;
+  }
+  .scenario-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: var(--card);
+    color: var(--text);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.1rem;
+    margin-top: 0.75rem;
+    font-size: 1.05rem;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .scenario-btn:hover, .scenario-btn:focus-visible {
+    border-color: var(--accent);
+  }
+  .scenario-btn .desc {
+    display: block;
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-top: 0.2rem;
+  }
+  fieldset {
+    border: none;
+    padding: 0;
+    margin: 1.25rem 0 0;
+  }
+  legend {
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 0;
+    margin-bottom: 0.5rem;
+  }
+  .opt {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.65rem 0.75rem;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    margin-top: 0.5rem;
+    cursor: pointer;
+  }
+  .opt:hover { border-color: var(--accent); }
+  .opt input {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.15rem;
+    flex-shrink: 0;
+    accent-color: var(--accent);
+  }
+  .btn {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--accent-text);
+    border: none;
+    border-radius: 10px;
+    padding: 0.75rem 1.4rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    margin-top: 1.25rem;
+  }
+  .btn:hover { filter: brightness(1.08); }
+  .btn.secondary {
+    background: transparent;
+    color: var(--accent);
+    border: 1.5px solid var(--accent);
+    font-weight: 500;
+  }
+  .btn.subtle {
+    background: transparent;
+    color: var(--muted);
+    border: 1.5px solid var(--border);
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.9rem;
+  }
+  .btn.danger {
+    background: transparent;
+    color: var(--danger);
+    border: 1.5px solid var(--danger);
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.9rem;
+  }
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .toolbar .btn { margin-top: 0; }
+  .plan-group h3 {
+    margin: 1.5rem 0 0.25rem;
+    font-size: 1.15rem;
+  }
+  .plan-group h3.now { color: var(--danger); }
+  .plan-group p.group-hint {
+    margin: 0 0 0.5rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  ul.plan { list-style: none; margin: 0; padding: 0; }
+  ul.plan li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.7rem 0.75rem;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    margin-top: 0.5rem;
+  }
+  ul.plan li.done {
+    background: var(--ok-bg);
+    border-color: var(--ok);
+  }
+  ul.plan li.done .item-text { text-decoration: line-through; opacity: 0.75; }
+  ul.plan input[type="checkbox"] {
+    width: 1.35rem;
+    height: 1.35rem;
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+    accent-color: var(--ok);
+  }
+  ul.plan label { cursor: pointer; }
+  .progress-note {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-top: 0.75rem;
+  }
+  details.flags { margin-top: 1.5rem; }
+  details.flags summary {
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0.5rem 0;
+  }
+  details.flags ul { padding-left: 1.25rem; margin: 0.5rem 0; }
+  details.flags li { margin-top: 0.4rem; }
+  footer.site {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 1rem 3rem;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  .hidden { display: none; }
+  .sr-status {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  @media print {
+    body { background: #fff; color: #000; }
+    header.site p.tagline, .notice, .toolbar, .btn, footer.site,
+    .privacy, .progress-note, details.flags { display: none !important; }
+    .card { border: none; padding: 0; }
+    ul.plan li { border: 1px solid #999; break-inside: avoid; }
+    ul.plan li.done { background: #eee; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <h1>🛟 SOS Golpe</h1>
+  <p class="tagline">Recebeu algo suspeito ou caiu em um golpe? Respire. Vamos organizar seus próximos passos.</p>
+</header>
+
+<main>
+  <div class="notice" role="note">
+    <strong>Importante:</strong> esta página não confirma se algo é ou não é golpe e não substitui
+    orientação oficial. Sempre confirme informações pelos canais oficiais que <em>você mesmo</em>
+    procurar — nunca pelos contatos, links ou telefones recebidos na mensagem suspeita.
+  </div>
+
+  <!-- Tela 1: escolha do cenário -->
+  <section id="screen-start" class="card" aria-labelledby="start-title">
+    <h2 id="start-title">O que aconteceu?</h2>
+    <button class="scenario-btn" data-scenario="nao_agi">
+      🤔 Recebi um contato suspeito, mas ainda não fiz nada
+      <span class="desc">Mensagem, ligação, cobrança ou oferta que parece estranha.</span>
+    </button>
+    <button class="scenario-btn" data-scenario="paguei">
+      💸 Paguei, transferi ou fiz um Pix
+      <span class="desc">O dinheiro já saiu e você desconfia que foi golpe.</span>
+    </button>
+    <button class="scenario-btn" data-scenario="dados">
+      🔑 Passei senha, código ou dados pessoais
+      <span class="desc">Você informou ou digitou algo que pode dar acesso às suas contas.</span>
+    </button>
+
+    <details class="flags">
+      <summary>📚 Sinais comuns de golpe (para consultar depois, com calma)</summary>
+      <ul>
+        <li><strong>Urgência e pressão:</strong> "só hoje", "sua conta será bloqueada em minutos". Quem é legítimo pode esperar.</li>
+        <li><strong>Pedido de sigilo:</strong> "não conte para ninguém". Golpistas isolam a vítima de propósito.</li>
+        <li><strong>Pix, código ou senha:</strong> nenhum banco, empresa ou órgão pede senha ou código de verificação por telefone ou mensagem.</li>
+        <li><strong>Oferta boa demais:</strong> renda fácil, prêmio inesperado, produto muito abaixo do preço.</li>
+        <li><strong>Link ou app fora do oficial:</strong> endereços parecidos com o verdadeiro, mas com letras trocadas, ou pedido para instalar app "de segurança".</li>
+        <li><strong>Familiar com número novo:</strong> "troquei de número, me faz um Pix?" — confirme sempre ligando para o número antigo.</li>
+      </ul>
+    </details>
+  </section>
+
+  <!-- Tela 2: perguntas -->
+  <section id="screen-questions" class="card hidden" aria-labelledby="questions-title">
+    <h2 id="questions-title"></h2>
+    <form id="questions-form"></form>
+    <div class="toolbar">
+      <button class="btn" id="btn-generate">Ver meu plano de ação</button>
+      <button class="btn subtle" id="btn-back-start">← Voltar</button>
+    </div>
+  </section>
+
+  <!-- Tela 3: plano -->
+  <section id="screen-plan" class="card hidden" aria-labelledby="plan-title">
+    <h2 id="plan-title">Seu plano de ação</h2>
+    <p id="plan-subtitle" class="group-hint"></p>
+    <div id="plan-body" aria-live="polite"></div>
+    <p class="progress-note">✔ Seu progresso fica salvo apenas neste aparelho. Você pode fechar e voltar depois.</p>
+    <div class="toolbar">
+      <button class="btn" id="btn-copy">Copiar plano</button>
+      <button class="btn secondary" id="btn-print">Imprimir / salvar PDF</button>
+      <button class="btn subtle" id="btn-back-questions">← Mudar respostas</button>
+      <button class="btn subtle" id="btn-restart">Recomeçar</button>
+    </div>
+  </section>
+
+  <p class="privacy">🔒 Nada é enviado a servidores. Tudo acontece e fica somente no seu navegador.</p>
+  <div class="toolbar" style="justify-content:center;">
+    <button class="btn danger" id="btn-wipe">Apagar todos os meus dados desta página</button>
+  </div>
+
+  <p class="sr-status" id="sr-status" aria-live="polite"></p>
+</main>
+
+<footer class="site">
+  <p>SOS Golpe é uma ferramenta educativa e offline. Não coleta dados, não diagnostica e não substitui
+  os canais oficiais do seu banco, das plataformas ou da polícia. Em emergências, procure ajuda diretamente.</p>
+</footer>
+
+<script>
+"use strict";
+
+/* ---------- Dados: cenários e perguntas ---------- */
+
+const SCENARIOS = {
+  nao_agi: {
+    title: "Sobre o contato que você recebeu",
+    questions: [
+      {
+        id: "canal", type: "single", label: "Por onde veio o contato?",
+        options: [
+          { v: "whats", l: "WhatsApp ou Telegram" },
+          { v: "ligacao", l: "Ligação telefônica" },
+          { v: "sms", l: "SMS" },
+          { v: "email", l: "E-mail" },
+          { v: "social", l: "Rede social, anúncio ou site" },
+        ],
+      },
+      {
+        id: "quem", type: "single", label: "Quem a pessoa ou mensagem diz ser?",
+        options: [
+          { v: "banco", l: "Meu banco, cartão ou financeira" },
+          { v: "governo", l: "Órgão do governo (Receita, INSS, Justiça…)" },
+          { v: "familiar", l: "Familiar ou amigo (às vezes com número novo)" },
+          { v: "empresa", l: "Empresa, loja ou entrega" },
+          { v: "emprego", l: "Oferta de emprego ou renda extra" },
+          { v: "outro", l: "Desconhecido, prêmio ou outra coisa" },
+        ],
+      },
+      {
+        id: "pedido", type: "multi", label: "O que estão pedindo? (marque tudo que se aplica)",
+        options: [
+          { v: "pagamento", l: "Pagamento, Pix ou boleto" },
+          { v: "link", l: "Clicar em link ou instalar aplicativo" },
+          { v: "dados", l: "Senha, código de verificação ou dados pessoais" },
+          { v: "urgencia", l: "Urgência ou segredo ('é pra agora', 'não conta pra ninguém')" },
+          { v: "nada", l: "Nada ainda, só acho estranho" },
+        ],
+      },
+    ],
+  },
+  paguei: {
+    title: "Sobre o pagamento que você fez",
+    questions: [
+      {
+        id: "metodo", type: "single", label: "Como você pagou?",
+        options: [
+          { v: "pix", l: "Pix" },
+          { v: "cartao", l: "Cartão de crédito ou débito" },
+          { v: "boleto", l: "Boleto" },
+          { v: "ted", l: "TED, DOC ou depósito" },
+          { v: "outro", l: "Dinheiro ou outro meio" },
+        ],
+      },
+      {
+        id: "quando", type: "single", label: "Quando foi o pagamento?",
+        options: [
+          { v: "hoje", l: "Há menos de 24 horas" },
+          { v: "dias", l: "Entre 1 e 3 dias" },
+          { v: "mais", l: "Há mais de 3 dias" },
+        ],
+      },
+      {
+        id: "extra", type: "multi", label: "Além do dinheiro, aconteceu algo mais? (opcional)",
+        options: [
+          { v: "dados", l: "Também passei senha, código ou dados" },
+          { v: "contato", l: "O golpista continua falando comigo" },
+          { v: "plataforma", l: "O golpe começou em site, anúncio ou rede social" },
+        ],
+      },
+    ],
+  },
+  dados: {
+    title: "Sobre o que você informou",
+    questions: [
+      {
+        id: "oque", type: "multi", label: "O que você passou ou digitou? (marque tudo que se aplica)",
+        options: [
+          { v: "senha_banco", l: "Senha de banco ou app financeiro" },
+          { v: "codigo", l: "Código recebido por SMS ou WhatsApp" },
+          { v: "cartao", l: "Dados do cartão (número, validade, CVV)" },
+          { v: "docs", l: "CPF, documentos ou fotos de documentos" },
+          { v: "senha_email", l: "Senha de e-mail ou rede social" },
+          { v: "app", l: "Instalei um app ou digitei dados em site suspeito" },
+        ],
+      },
+      {
+        id: "quando", type: "single", label: "Quando isso aconteceu?",
+        options: [
+          { v: "agora", l: "Agora há pouco (menos de 1 hora)" },
+          { v: "hoje", l: "Hoje" },
+          { v: "antes", l: "Ontem ou antes" },
+        ],
+      },
+    ],
+  },
+};
+
+/* ---------- Dados: construção do plano ---------- */
+
+const GROUPS = [
+  { key: "agora", title: "🔴 Faça agora", hint: "Os primeiros minutos fazem diferença.", cls: "now" },
+  { key: "hoje", title: "🟡 Ainda hoje", hint: "Assim que der, sem deixar para amanhã." },
+  { key: "depois", title: "🟢 Nos próximos dias", hint: "Para se proteger daqui para frente." },
+];
+
+function buildPlan(scenario, a) {
+  const items = { agora: [], hoje: [], depois: [] };
+  const add = (g, id, text) => items[g].push({ id, text });
+  const has = (qid, v) => Array.isArray(a[qid]) ? a[qid].includes(v) : a[qid] === v;
+
+  if (scenario === "nao_agi") {
+    add("agora", "na1", "Não responda, não clique em links e não instale nada por enquanto. Você não precisa decidir nada agora.");
+    add("agora", "na2", "Não pague, não transfira e não informe senhas ou códigos. Urgência é a principal arma do golpista — quem é legítimo pode esperar.");
+    if (has("quem", "banco"))
+      add("agora", "na3", "Quer confirmar se é mesmo o banco? Ligue para o número no verso do seu cartão ou use o app oficial. Nunca use o telefone ou link que enviaram para você.");
+    if (has("quem", "familiar"))
+      add("agora", "na4", "Ligue para o número antigo da pessoa (ou faça uma chamada de vídeo) antes de qualquer coisa. 'Troquei de número, me faz um Pix' é um golpe muito comum.");
+    if (has("quem", "governo"))
+      add("agora", "na5", "Órgãos públicos não cobram por mensagem nem pedem Pix. Confirme digitando você mesmo o endereço oficial (gov.br) ou pelo app oficial do órgão.");
+    if (has("quem", "empresa"))
+      add("agora", "na6", "Consulte seu pedido ou fatura diretamente no site ou app oficial da empresa, digitando o endereço você mesmo.");
+    if (has("quem", "emprego"))
+      add("agora", "na7", "Desconfie de vaga ou renda extra que pede depósito, 'tarefa paga' ou dados bancários logo de início. Empresa séria não pede dinheiro para contratar.");
+    if (has("pedido", "dados"))
+      add("agora", "na8", "Se pediram um código de 6 dígitos recebido por SMS ou WhatsApp, não informe em hipótese alguma: é assim que contas de WhatsApp são roubadas.");
+    add("hoje", "nh1", "Guarde as provas: tire prints da conversa, anote números, e-mails, chaves Pix e nomes usados. Não apague nada ainda.");
+    add("hoje", "nh2", "Bloqueie e denuncie o contato no próprio aplicativo (WhatsApp, Instagram, e-mail etc.) depois de guardar as provas.");
+    if (has("canal", "whats") || has("canal", "sms"))
+      add("hoje", "nh3", "Avise a pessoa ou empresa verdadeira (se alguém está sendo imitado) e alerte familiares que possam receber o mesmo golpe — especialmente os mais velhos.");
+    add("depois", "nd1", "Se houve tentativa de crime, registre um boletim de ocorrência online: busque por “delegacia eletrônica” + o nome do seu estado.");
+    add("depois", "nd2", "Ative a confirmação em duas etapas no WhatsApp (Configurações → Conta → Confirmação em duas etapas) e no seu e-mail.");
+  }
+
+  if (scenario === "paguei") {
+    add("agora", "pa0", "Respire. Agir com método aumenta suas chances. A culpa não é sua: golpistas são profissionais em enganar.");
+    if (has("metodo", "pix"))
+      add("agora", "pa1", "Ligue agora para o seu banco (pelo app oficial ou número no verso do cartão) e peça a devolução do Pix pelo MED — Mecanismo Especial de Devolução. Você pode pedir em até 80 dias, mas quanto antes, maior a chance de bloquear o dinheiro.");
+    if (has("metodo", "cartao"))
+      add("agora", "pa2", "Ligue para o banco ou emissor do cartão, conteste a compra e, se os dados do cartão foram expostos, peça o bloqueio e um cartão novo.");
+    if (has("metodo", "boleto") || has("metodo", "ted"))
+      add("agora", "pa3", "Avise imediatamente o seu banco sobre o pagamento. A reversão é difícil, mas o banco registra a fraude e pode orientar os próximos passos.");
+    if (has("extra", "dados"))
+      add("agora", "pa4", "Como você também passou dados ou senha, troque as senhas envolvidas agora e avise o banco para monitorar sua conta. (Ao terminar este plano, refaça a triagem escolhendo “Passei senha, código ou dados”.)");
+    if (has("extra", "contato"))
+      add("agora", "pa5", "Pare de responder o golpista, mas não bloqueie nem apague a conversa ainda: ela é prova. Não envie mais nada, mesmo que ameacem ou prometam devolver.");
+    add("hoje", "ph1", "Reúna tudo: comprovantes, prints da conversa, chave Pix ou dados de quem recebeu, anúncios e links envolvidos.");
+    add("hoje", "ph2", "Registre um boletim de ocorrência online na delegacia eletrônica do seu estado (busque por “delegacia eletrônica” + seu estado). O B.O. é essencial para o banco e para investigação.");
+    if (has("extra", "plataforma"))
+      add("hoje", "ph3", "Denuncie o perfil, anúncio ou página na própria plataforma onde o golpe começou (marketplace, rede social, site de anúncios).");
+    add("depois", "pd1", "Acompanhe seu extrato e fatura nos próximos dias e registre qualquer movimentação estranha.");
+    add("depois", "pd2", "Atenção ao “golpe do falso reembolso”: quem ligar ou escrever prometendo recuperar seu dinheiro mediante taxa ou novo Pix é outro golpista. Bancos e polícia não cobram para devolver dinheiro.");
+    add("depois", "pd3", "Sem pressa e quando se sentir bem: conte a alguém de confiança. Além de apoio, isso ajuda a proteger outras pessoas do mesmo golpe.");
+  }
+
+  if (scenario === "dados") {
+    const urgent = has("quando", "agora") || has("quando", "hoje");
+    add("agora", "da0", urgent
+      ? "Aja rápido, mas com calma: os primeiros minutos são valiosos e cada item abaixo fecha uma porta para o golpista."
+      : "Mesmo tendo passado um tempo, vale a pena fechar cada porta abaixo — muitos golpes usam os dados dias depois.");
+    if (has("oque", "senha_banco"))
+      add("agora", "da1", "Ligue para o banco imediatamente (app oficial ou número no verso do cartão): avise o ocorrido, troque a senha e peça verificação de movimentações e tentativas de acesso.");
+    if (has("oque", "codigo"))
+      add("agora", "da2", "Seu WhatsApp pode ser clonado: abra o app e entre novamente com seu número para retomar a conta. Depois ative a confirmação em duas etapas (Configurações → Conta). Avise seus contatos para não fazerem Pix “para você”.");
+    if (has("oque", "cartao"))
+      add("agora", "da3", "Bloqueie o cartão pelo app do banco e peça um novo. Se não conseguir pelo app, ligue para o número no verso do cartão.");
+    if (has("oque", "senha_email"))
+      add("agora", "da4", "Troque a senha agora, começando pelo e-mail (é ele que recupera as outras contas). Depois ative a verificação em duas etapas e encerre as sessões abertas em outros aparelhos.");
+    if (has("oque", "app"))
+      add("agora", "da5", "Desinstale o app suspeito e evite usar o aparelho para banco até limpar tudo. Se possível, troque as senhas usando outro aparelho.");
+    if (has("oque", "docs"))
+      add("hoje", "dh1", "Com seu CPF em mãos, golpistas tentam abrir contas e dívidas. Consulte o Registrato, sistema gratuito do Banco Central (registrato.bcb.gov.br), para ver contas e empréstimos no seu nome.");
+    add("hoje", "dh2", "Troque também senhas parecidas usadas em outros serviços — golpistas testam a mesma senha em vários lugares.");
+    add("hoje", "dh3", "Guarde as provas: prints da conversa, do site ou do app, números e e-mails usados pelo golpista.");
+    add("depois", "dd1", "Registre um boletim de ocorrência online (busque por “delegacia eletrônica” + seu estado), principalmente se houver qualquer movimentação ou conta aberta em seu nome.");
+    if (has("oque", "docs"))
+      add("depois", "dd2", "Considere ativar alertas de uso do seu CPF nos serviços gratuitos dos birôs de crédito (Serasa, SPC) para ser avisado de consultas e novas dívidas.");
+    add("depois", "dd3", "Fique atento nas próximas semanas: quem tem seus dados pode tentar novos golpes se passando por banco ou polícia. Na dúvida, desligue e ligue você mesmo para o canal oficial.");
+  }
+
+  return items;
+}
+
+/* ---------- Estado ---------- */
+
+const STORE_KEY = "sosgolpe.v1";
+let state = { scenario: null, answers: {}, checked: {} };
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) state = Object.assign(state, JSON.parse(raw));
+  } catch (e) { /* armazenamento indisponível: segue sem persistência */ }
+}
+function saveState() {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) { /* ok */ }
+}
+function wipeState() {
+  try { localStorage.removeItem(STORE_KEY); } catch (e) { /* ok */ }
+  state = { scenario: null, answers: {}, checked: {} };
+}
+
+/* ---------- Telas ---------- */
+
+const $ = (id) => document.getElementById(id);
+const screens = { start: $("screen-start"), questions: $("screen-questions"), plan: $("screen-plan") };
+
+function show(name) {
+  for (const key of Object.keys(screens)) screens[key].classList.toggle("hidden", key !== name);
+  const heading = screens[name].querySelector("h2");
+  if (heading) { heading.setAttribute("tabindex", "-1"); heading.focus({ preventScroll: false }); }
+  window.scrollTo({ top: 0 });
+}
+
+function announce(msg) { $("sr-status").textContent = msg; }
+
+/* ---------- Tela de perguntas ---------- */
+
+function renderQuestions() {
+  const sc = SCENARIOS[state.scenario];
+  $("questions-title").textContent = sc.title;
+  const form = $("questions-form");
+  form.innerHTML = "";
+  for (const q of sc.questions) {
+    const fs = document.createElement("fieldset");
+    const lg = document.createElement("legend");
+    lg.textContent = q.label;
+    fs.appendChild(lg);
+    for (const opt of q.options) {
+      const lab = document.createElement("label");
+      lab.className = "opt";
+      const input = document.createElement("input");
+      input.type = q.type === "multi" ? "checkbox" : "radio";
+      input.name = q.id;
+      input.value = opt.v;
+      const saved = state.answers[q.id];
+      input.checked = q.type === "multi"
+        ? Array.isArray(saved) && saved.includes(opt.v)
+        : saved === opt.v;
+      const span = document.createElement("span");
+      span.textContent = opt.l;
+      lab.appendChild(input);
+      lab.appendChild(span);
+      fs.appendChild(lab);
+    }
+    form.appendChild(fs);
+  }
+}
+
+function collectAnswers() {
+  const sc = SCENARIOS[state.scenario];
+  const answers = {};
+  for (const q of sc.questions) {
+    const inputs = [...document.querySelectorAll(`#questions-form [name="${q.id}"]:checked`)];
+    answers[q.id] = q.type === "multi" ? inputs.map(i => i.value) : (inputs[0] ? inputs[0].value : null);
+  }
+  return answers;
+}
+
+/* ---------- Tela do plano ---------- */
+
+const SCENARIO_LABELS = {
+  nao_agi: "Contato suspeito — ainda não agi",
+  paguei: "Paguei ou transferi dinheiro",
+  dados: "Passei senha, código ou dados",
+};
+
+function renderPlan() {
+  const items = buildPlan(state.scenario, state.answers);
+  $("plan-subtitle").textContent = "Situação: " + SCENARIO_LABELS[state.scenario] +
+    ". Marque cada item conforme for concluindo.";
+  const body = $("plan-body");
+  body.innerHTML = "";
+  for (const g of GROUPS) {
+    if (!items[g.key].length) continue;
+    const wrap = document.createElement("div");
+    wrap.className = "plan-group";
+    const h = document.createElement("h3");
+    h.textContent = g.title;
+    if (g.cls) h.classList.add(g.cls);
+    const hint = document.createElement("p");
+    hint.className = "group-hint";
+    hint.textContent = g.hint;
+    const ul = document.createElement("ul");
+    ul.className = "plan";
+    for (const item of items[g.key]) {
+      const li = document.createElement("li");
+      const lab = document.createElement("label");
+      lab.style.display = "contents";
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = !!state.checked[item.id];
+      li.classList.toggle("done", cb.checked);
+      cb.addEventListener("change", () => {
+        state.checked[item.id] = cb.checked;
+        li.classList.toggle("done", cb.checked);
+        saveState();
+      });
+      const span = document.createElement("span");
+      span.className = "item-text";
+      span.textContent = item.text;
+      lab.appendChild(cb);
+      lab.appendChild(span);
+      li.appendChild(lab);
+      ul.appendChild(li);
+    }
+    wrap.appendChild(h);
+    wrap.appendChild(hint);
+    wrap.appendChild(ul);
+    body.appendChild(wrap);
+  }
+}
+
+function planAsText() {
+  const items = buildPlan(state.scenario, state.answers);
+  const lines = ["SOS GOLPE — PLANO DE AÇÃO", "Situação: " + SCENARIO_LABELS[state.scenario], ""];
+  for (const g of GROUPS) {
+    if (!items[g.key].length) continue;
+    lines.push(g.title.replace(/^\S+\s/, "").toUpperCase());
+    for (const item of items[g.key]) {
+      lines.push((state.checked[item.id] ? "[x] " : "[ ] ") + item.text);
+    }
+    lines.push("");
+  }
+  lines.push("Lembrete: confirme tudo pelos canais oficiais que você mesmo procurar.");
+  lines.push("Gerado offline por SOS Golpe — nada foi enviado a servidores.");
+  return lines.join("\n");
+}
+
+/* ---------- Eventos ---------- */
+
+document.querySelectorAll(".scenario-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const sc = btn.dataset.scenario;
+    if (state.scenario !== sc) {
+      state.scenario = sc;
+      state.answers = {};
+      state.checked = {};
+    }
+    saveState();
+    renderQuestions();
+    show("questions");
+  });
+});
+
+$("btn-generate").addEventListener("click", (e) => {
+  e.preventDefault();
+  state.answers = collectAnswers();
+  saveState();
+  renderPlan();
+  show("plan");
+  announce("Plano de ação gerado.");
+});
+
+$("btn-back-start").addEventListener("click", (e) => { e.preventDefault(); show("start"); });
+$("btn-back-questions").addEventListener("click", () => { renderQuestions(); show("questions"); });
+
+$("btn-restart").addEventListener("click", () => {
+  state = { scenario: null, answers: {}, checked: {} };
+  saveState();
+  show("start");
+});
+
+$("btn-copy").addEventListener("click", async () => {
+  const text = planAsText();
+  let ok = false;
+  try {
+    await navigator.clipboard.writeText(text);
+    ok = true;
+  } catch (e) {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    try { ok = document.execCommand("copy"); } catch (e2) { ok = false; }
+    ta.remove();
+  }
+  $("btn-copy").textContent = ok ? "Copiado ✔" : "Não foi possível copiar";
+  announce(ok ? "Plano copiado para a área de transferência." : "Não foi possível copiar o plano.");
+  setTimeout(() => { $("btn-copy").textContent = "Copiar plano"; }, 2500);
+});
+
+$("btn-print").addEventListener("click", () => window.print());
+
+$("btn-wipe").addEventListener("click", () => {
+  if (confirm("Apagar todas as respostas e o progresso salvos neste aparelho?")) {
+    wipeState();
+    show("start");
+    announce("Todos os dados desta página foram apagados.");
+  }
+});
+
+/* ---------- Inicialização: retoma de onde parou ---------- */
+
+loadState();
+if (state.scenario && Object.keys(state.answers).length) {
+  renderPlan();
+  show("plan");
+} else if (state.scenario) {
+  renderQuestions();
+  show("questions");
+}
+</script>
+</body>
+</html>

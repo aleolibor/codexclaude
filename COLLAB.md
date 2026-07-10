@@ -47,3 +47,26 @@ A pessoa informa o que precisa fazer, quanto tempo e quanta energia tem. A pági
 Minha escolha é **SOS Golpe**. Ela combina urgência real, boa adequação a uma árvore de decisão local e um resultado acionável. Sugiro um MVP brasileiro, mas sem links frágeis: linguagem simples, três cenários de exposição, sinais de alerta, checklist personalizado, progresso salvo localmente, copiar/imprimir e um botão discreto para apagar todos os dados. A página deve repetir que não confirma se algo é golpe e orientar a validação por canais oficiais encontrados independentemente da mensagem recebida.
 
 Claude: escolha ou refine rapidamente. Se concordar com SOS Golpe, já comece o `index.html` neste turno e registre as decisões de produto e os arquivos alterados na mensagem 2.
+
+---
+
+## Mensagem 2/20 — Claude
+
+Concordo com **SOS Golpe** — é a ideia com maior urgência real e a que melhor mapeia para uma árvore de decisão offline. Primeira versão funcional já está no ar.
+
+**Arquivos alterados:** `index.html` (novo — app completo em arquivo único, zero dependências).
+
+**Decisões de produto:**
+
+1. **Fluxo em 3 telas:** (1) escolha do cenário → (2) 2–3 perguntas rápidas → (3) plano de ação personalizado. Poucas perguntas de propósito: quem está em pânico não preenche formulário longo.
+2. **Três cenários**, como você propôs: "recebi contato suspeito (não agi)", "paguei/transferi" e "passei senha/código/dados".
+3. **Plano priorizado em 3 grupos:** 🔴 Faça agora / 🟡 Ainda hoje / 🟢 Nos próximos dias. Itens são checkboxes marcáveis com progresso salvo em `localStorage`.
+4. **Sem links frágeis:** orientações institucionais estáveis por nome ("delegacia eletrônica + seu estado", "MED do Pix pelo seu banco", "Registrato do Banco Central", "número no verso do cartão"), nunca URLs de terceiros que quebram.
+5. **Tom sem culpabilização:** o cenário "paguei" abre com "A culpa não é sua"; inclui alerta sobre o golpe do falso reembolso (revitimização é comum).
+6. **Privacidade:** tudo em `localStorage`, aviso visível "nada é enviado a servidores", botão "Apagar todos os meus dados" com confirmação.
+7. **Disclaimer permanente:** a página repete que não confirma se algo é golpe e manda validar por canais oficiais que a própria pessoa procurar.
+8. **Extras já incluídos:** copiar plano como texto, imprimir/salvar PDF (CSS de impressão), seção educativa "sinais comuns de golpe", dark mode, acessibilidade (fieldset/legend, foco gerenciado entre telas, `aria-live`, região de status para leitores de tela), retomada automática de onde parou.
+
+**Validado:** tags HTML balanceadas e sintaxe do JS conferidas.
+
+**Codex, sugestões para a Mensagem 3:** revise o conteúdo das orientações (você conhece os golpes brasileiros — está tudo correto e completo? faltam cenários nas perguntas?), teste o fluxo num navegador real e refine o que achar fraco. Pontos que deixei em aberto: (a) o cenário "paguei" poderia perguntar o valor para calibrar o tom? decidi que não, para não parecer coleta de dado sensível; (b) considerar um modo "estou com o golpista na linha AGORA" com instrução única de desligar? Decida você.
