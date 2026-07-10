@@ -88,6 +88,15 @@
     text-align: center;
     margin-top: 0.75rem;
   }
+  .urgent-box {
+    background: var(--danger-bg);
+    border: 2px solid var(--danger);
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin: 1rem 0 1.25rem;
+  }
+  .urgent-box p { margin: 0; }
+  .urgent-box .btn { margin-top: 0.75rem; }
   .scenario-btn {
     display: block;
     width: 100%;
@@ -271,6 +280,10 @@
   <!-- Tela 1: escolha do cenário -->
   <section id="screen-start" class="card" aria-labelledby="start-title">
     <h2 id="start-title">O que aconteceu?</h2>
+    <div class="urgent-box">
+      <p><strong>Estão falando com você agora?</strong> Não precisa terminar a conversa nem explicar nada.</p>
+      <button class="btn" id="btn-line-now">Ver o que fazer imediatamente</button>
+    </div>
     <button class="scenario-btn" data-scenario="nao_agi">
       🤔 Recebi um contato suspeito, mas ainda não fiz nada
       <span class="desc">Mensagem, ligação, cobrança ou oferta que parece estranha.</span>
@@ -446,6 +459,14 @@ function buildPlan(scenario, a) {
   const add = (g, id, text) => items[g].push({ id, text });
   const has = (qid, v) => Array.isArray(a[qid]) ? a[qid].includes(v) : a[qid] === v;
 
+  if (scenario === "linha") {
+    add("agora", "la1", "Encerre a ligação ou pare de responder agora. Você não precisa explicar, negociar nem se despedir. Uma instituição legítima não exige que você permaneça na linha.");
+    add("agora", "la2", "Não compartilhe a tela, não informe códigos e não instale aplicativos. Se já iniciou um compartilhamento ou instalou algo a pedido da pessoa, ative o modo avião e desligue o Wi‑Fi.");
+    add("agora", "la3", "Ligue para alguém de confiança usando um número que você já tinha. A pressão perde força quando outra pessoa ajuda a conferir a história.");
+    add("hoje", "lh1", "Depois de encerrar, guarde prints e o registro da chamada. Não retorne pelo número recebido.");
+    add("hoje", "lh2", "Recomece esta triagem e escolha o que aconteceu: contato suspeito, pagamento ou dados compartilhados. Assim você recebe os próximos passos específicos.");
+  }
+
   if (scenario === "nao_agi") {
     add("agora", "na1", "Não responda, não clique em links e não instale nada por enquanto. Você não precisa decidir nada agora.");
     add("agora", "na2", "Não pague, não transfira e não informe senhas ou códigos. Urgência é a principal arma do golpista — quem é legítimo pode esperar.");
@@ -472,7 +493,7 @@ function buildPlan(scenario, a) {
   if (scenario === "paguei") {
     add("agora", "pa0", "Respire. Agir com método aumenta suas chances. A culpa não é sua: golpistas são profissionais em enganar.");
     if (has("metodo", "pix"))
-      add("agora", "pa1", "Ligue agora para o seu banco (pelo app oficial ou número no verso do cartão) e peça a devolução do Pix pelo MED — Mecanismo Especial de Devolução. Você pode pedir em até 80 dias, mas quanto antes, maior a chance de bloquear o dinheiro.");
+      add("agora", "pa1", "Abra o app oficial do seu banco, localize a transação Pix e use a opção de contestar para acionar o MED — Mecanismo Especial de Devolução. Se não encontrar, use o atendimento dentro do app ou o número oficial do banco. O pedido pode ser feito em até 80 dias, mas agir rápido aumenta a chance de recuperar algum valor; a devolução não é garantida.");
     if (has("metodo", "cartao"))
       add("agora", "pa2", "Ligue para o banco ou emissor do cartão, conteste a compra e, se os dados do cartão foram expostos, peça o bloqueio e um cartão novo.");
     if (has("metodo", "boleto") || has("metodo", "ted"))
@@ -504,7 +525,7 @@ function buildPlan(scenario, a) {
     if (has("oque", "senha_email"))
       add("agora", "da4", "Troque a senha agora, começando pelo e-mail (é ele que recupera as outras contas). Depois ative a verificação em duas etapas e encerre as sessões abertas em outros aparelhos.");
     if (has("oque", "app"))
-      add("agora", "da5", "Desinstale o app suspeito e evite usar o aparelho para banco até limpar tudo. Se possível, troque as senhas usando outro aparelho.");
+      add("agora", "da5", "Ative o modo avião e desligue o Wi‑Fi para interromper possível acesso remoto. Usando outro aparelho confiável, avise o banco e troque primeiro a senha do e-mail e depois as senhas financeiras. Só então remova o app suspeito; se o aparelho continuar estranho, procure suporte técnico confiável antes de voltar a usá-lo para banco.");
     if (has("oque", "docs"))
       add("hoje", "dh1", "Com seu CPF em mãos, golpistas tentam abrir contas e dívidas. Consulte o Registrato, sistema gratuito do Banco Central (registrato.bcb.gov.br), para ver contas e empréstimos no seu nome.");
     add("hoje", "dh2", "Troque também senhas parecidas usadas em outros serviços — golpistas testam a mesma senha em vários lugares.");
@@ -597,6 +618,7 @@ function collectAnswers() {
 /* ---------- Tela do plano ---------- */
 
 const SCENARIO_LABELS = {
+  linha: "Estou falando com a pessoa agora",
   nao_agi: "Contato suspeito — ainda não agi",
   paguei: "Paguei ou transferi dinheiro",
   dados: "Passei senha, código ou dados",
@@ -665,6 +687,14 @@ function planAsText() {
 }
 
 /* ---------- Eventos ---------- */
+
+$("btn-line-now").addEventListener("click", () => {
+  state = { scenario: "linha", answers: { quick: true }, checked: {} };
+  saveState();
+  renderPlan();
+  show("plan");
+  announce("Instruções imediatas abertas. Encerre o contato agora.");
+});
 
 document.querySelectorAll(".scenario-btn").forEach(btn => {
   btn.addEventListener("click", () => {
