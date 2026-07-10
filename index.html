@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="SOS Golpe — triagem e plano de ação contra fraudes digitais. Funciona offline, nada sai do seu aparelho.">
+<meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#12151c" media="(prefers-color-scheme: dark)">
 <title>SOS Golpe — o que fazer agora</title>
 <style>
   :root {
@@ -163,6 +165,14 @@
     margin-top: 1.25rem;
   }
   .btn:hover { filter: brightness(1.08); }
+  .btn:focus-visible, .scenario-btn:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .opt:focus-within {
+    outline: 3px solid var(--accent);
+    outline-offset: 1px;
+  }
   .btn.secondary {
     background: transparent;
     color: var(--accent);
@@ -204,13 +214,20 @@
   }
   ul.plan { list-style: none; margin: 0; padding: 0; }
   ul.plan li {
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    margin-top: 0.5rem;
+  }
+  ul.plan li:focus-within {
+    outline: 3px solid var(--accent);
+    outline-offset: 1px;
+  }
+  ul.plan label {
     display: flex;
     align-items: flex-start;
     gap: 0.6rem;
     padding: 0.7rem 0.75rem;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    margin-top: 0.5rem;
+    cursor: pointer;
   }
   ul.plan li.done {
     background: var(--ok-bg);
@@ -224,7 +241,9 @@
     flex-shrink: 0;
     accent-color: var(--ok);
   }
-  ul.plan label { cursor: pointer; }
+  @media (max-width: 480px) {
+    .toolbar .btn { flex: 1 1 auto; text-align: center; }
+  }
   .progress-note {
     color: var(--muted);
     font-size: 0.9rem;
@@ -266,7 +285,7 @@
 <body>
 
 <header class="site">
-  <h1>🛟 SOS Golpe</h1>
+  <h1><span aria-hidden="true">🛟</span> SOS Golpe</h1>
   <p class="tagline">Recebeu algo suspeito ou caiu em um golpe? Respire. Vamos organizar seus próximos passos.</p>
 </header>
 
@@ -285,15 +304,15 @@
       <button class="btn" id="btn-line-now">Ver o que fazer imediatamente</button>
     </div>
     <button class="scenario-btn" data-scenario="nao_agi">
-      🤔 Recebi um contato suspeito, mas ainda não fiz nada
+      <span aria-hidden="true">🤔</span> Recebi um contato suspeito, mas ainda não fiz nada
       <span class="desc">Mensagem, ligação, cobrança ou oferta que parece estranha.</span>
     </button>
     <button class="scenario-btn" data-scenario="paguei">
-      💸 Paguei, transferi ou fiz um Pix
+      <span aria-hidden="true">💸</span> Paguei, transferi ou fiz um Pix
       <span class="desc">O dinheiro já saiu e você desconfia que foi golpe.</span>
     </button>
     <button class="scenario-btn" data-scenario="dados">
-      🔑 Passei senha, código ou dados pessoais
+      <span aria-hidden="true">🔑</span> Passei senha, código ou dados pessoais
       <span class="desc">Você informou ou digitou algo que pode dar acesso às suas contas.</span>
     </button>
 
@@ -324,7 +343,7 @@
   <section id="screen-plan" class="card hidden" aria-labelledby="plan-title">
     <h2 id="plan-title">Seu plano de ação</h2>
     <p id="plan-subtitle" class="group-hint"></p>
-    <div id="plan-body" aria-live="polite"></div>
+    <div id="plan-body"></div>
     <p class="progress-note">✔ Seu progresso fica salvo apenas neste aparelho. Você pode fechar e voltar depois.</p>
     <div class="toolbar">
       <button class="btn" id="btn-copy">Copiar plano</button>
@@ -549,6 +568,12 @@ function loadState() {
     const raw = localStorage.getItem(STORE_KEY);
     if (raw) state = Object.assign(state, JSON.parse(raw));
   } catch (e) { /* armazenamento indisponível: segue sem persistência */ }
+  // Estado corrompido ou de versão desconhecida não pode travar a página
+  if (state.scenario && state.scenario !== "linha" && !SCENARIOS[state.scenario]) {
+    state = { scenario: null, answers: {}, checked: {} };
+  }
+  if (typeof state.answers !== "object" || state.answers === null || Array.isArray(state.answers)) state.answers = {};
+  if (typeof state.checked !== "object" || state.checked === null || Array.isArray(state.checked)) state.checked = {};
 }
 function saveState() {
   try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) { /* ok */ }
@@ -628,6 +653,8 @@ function renderPlan() {
   const items = buildPlan(state.scenario, state.answers);
   $("plan-subtitle").textContent = "Situação: " + SCENARIO_LABELS[state.scenario] +
     ". Marque cada item conforme for concluindo.";
+  // O modo de emergência não tem questionário para voltar
+  $("btn-back-questions").classList.toggle("hidden", !SCENARIOS[state.scenario]);
   const body = $("plan-body");
   body.innerHTML = "";
   for (const g of GROUPS) {
@@ -645,7 +672,6 @@ function renderPlan() {
     for (const item of items[g.key]) {
       const li = document.createElement("li");
       const lab = document.createElement("label");
-      lab.style.display = "contents";
       const cb = document.createElement("input");
       cb.type = "checkbox";
       cb.checked = !!state.checked[item.id];
@@ -720,7 +746,11 @@ $("btn-generate").addEventListener("click", (e) => {
 });
 
 $("btn-back-start").addEventListener("click", (e) => { e.preventDefault(); show("start"); });
-$("btn-back-questions").addEventListener("click", () => { renderQuestions(); show("questions"); });
+$("btn-back-questions").addEventListener("click", () => {
+  if (!SCENARIOS[state.scenario]) { show("start"); return; }
+  renderQuestions();
+  show("questions");
+});
 
 $("btn-restart").addEventListener("click", () => {
   state = { scenario: null, answers: {}, checked: {} };
@@ -760,7 +790,10 @@ $("btn-wipe").addEventListener("click", () => {
 /* ---------- Inicialização: retoma de onde parou ---------- */
 
 loadState();
-if (state.scenario && Object.keys(state.answers).length) {
+if (state.scenario === "linha") {
+  renderPlan();
+  show("plan");
+} else if (state.scenario && Object.keys(state.answers).length) {
   renderPlan();
   show("plan");
 } else if (state.scenario) {
