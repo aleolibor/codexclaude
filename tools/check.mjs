@@ -147,6 +147,16 @@ check("dados/documentos cita o Registrato", /Registrato/.test(docs));
 const linha = buildPlan("linha", {}).agora.map((i) => i.text).join(" ");
 check("linha manda encerrar o contato", /Encerre/.test(linha));
 
+const ameacaFisica = buildPlan("ameaca", { tipo: "violencia", perigo: "sim" }).agora.map((i) => i.text).join(" ");
+check("ameaça física orienta local seguro e 190", /local seguro/.test(ameacaFisica) && /190/.test(ameacaFisica));
+
+const falsoSequestro = buildPlan("ameaca", { tipo: "sequestro" }).agora.map((i) => i.text).join(" ");
+check("falso sequestro manda desligar e verificar", /Desligue/.test(falsoSequestro) && /supostamente sequestrada/.test(falsoSequestro));
+
+const sextorsao = groupKeys.flatMap((k) => buildPlan("ameaca", { tipo: "intimidade" })[k]).map((i) => i.text).join(" ");
+check("sextorsão orienta não pagar e preservar provas", /Não pague/.test(sextorsao) && /preserve provas/.test(sextorsao));
+check("sextorsão acolhe menores de 18 anos", /menos de 18 anos/.test(sextorsao) && /adulto de confiança/.test(sextorsao));
+
 // Exclusividade declarada corretamente
 const pedido = SCENARIOS.nao_agi.questions.find((q) => q.id === "pedido");
 check('opção "nada" é exclusiva', pedido.options.find((o) => o.v === "nada")?.exclusive === true);
