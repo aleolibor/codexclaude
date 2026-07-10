@@ -157,6 +157,25 @@ const sextorsao = groupKeys.flatMap((k) => buildPlan("ameaca", { tipo: "intimida
 check("sextorsão orienta não pagar e preservar provas", /Não pague/.test(sextorsao) && /preserve provas/.test(sextorsao));
 check("sextorsão acolhe menores de 18 anos", /menos de 18 anos/.test(sextorsao) && /adulto de confiança/.test(sextorsao));
 
+// Ordem e segurança do cenário de ameaça: ação crítica sempre em primeiro
+const perigoPlan = buildPlan("ameaca", { tipo: "violencia", perigo: "sim" });
+check("perigo físico: 190/local seguro é o PRIMEIRO item", perigoPlan.agora[0].id === "aa1");
+
+const seqPlan = buildPlan("ameaca", { tipo: "sequestro", perigo: "sim" });
+check("falso sequestro: desligar/verificar é o PRIMEIRO item", seqPlan.agora[0].id === "aa2");
+check("falso sequestro: cita 190 e não mistura item genérico de fuga",
+  /190/.test(seqPlan.agora.map((i) => i.text).join(" ")) && !seqPlan.agora.some((i) => i.id === "aa1"));
+
+const violencia = buildPlan("ameaca", { tipo: "violencia" }).agora.map((i) => i.text).join(" ");
+check("violência cita o 180 (violência doméstica)", /180/.test(violencia));
+
+const menorAgora = buildPlan("ameaca", { tipo: "intimidade" }).agora.map((i) => i.text).join(" ");
+check("menores: orientação está em 'agora', sem tom de culpa, com Disque 100",
+  /não fez nada de errado/.test(menorAgora) && /Disque Direitos Humanos/.test(menorAgora));
+
+const cedeuConteudo = buildPlan("ameaca", { tipo: "intimidade", cedeu: ["conteudo"] }).agora.map((i) => i.id);
+check("cedeu conteúdo gera orientação própria", cedeuConteudo.includes("aa10"));
+
 // Exclusividade declarada corretamente
 const pedido = SCENARIOS.nao_agi.questions.find((q) => q.id === "pedido");
 check('opção "nada" é exclusiva', pedido.options.find((o) => o.v === "nada")?.exclusive === true);

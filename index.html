@@ -600,28 +600,32 @@ function buildPlan(scenario, a) {
   }
 
   if (scenario === "ameaca") {
-    add("agora", "aa0", "Você não precisa enfrentar isso sozinho. Não negocie sob pressão, não marque encontro e não confronte quem está ameaçando você.");
-    if (has("perigo", "sim"))
-      add("agora", "aa1", "Vá para um local seguro e ligue 190. Se não puder ligar com segurança, peça a alguém próximo que acione a polícia. Não tente investigar ou encontrar a pessoa por conta própria.");
-    if (has("tipo", "violencia") && !has("perigo", "sim"))
-      add("agora", "aa7", "Não aceite encontros e não confronte a pessoa. Avise alguém de confiança, evite ficar sozinho e preserve as mensagens. Se a pessoa se aproximar, souber onde você está ou o risco mudar, vá para um local seguro e ligue 190.");
+    // A ação crítica de segurança vem sempre antes do acolhimento genérico
     if (has("tipo", "sequestro")) {
       add("agora", "aa2", "Desligue sem fornecer nomes ou outros dados. Ligue você mesmo para a pessoa supostamente sequestrada ou peça a alguém de confiança que faça isso por outro telefone.");
-      add("agora", "aa3", "Se não conseguir confirmar que a pessoa está segura, acione a polícia antes de pagar ou seguir qualquer ordem recebida.");
+      add("agora", "aa3", "Se não conseguir confirmar que a pessoa está segura, ligue 190 antes de pagar ou seguir qualquer ordem recebida.");
+    } else if (has("perigo", "sim")) {
+      add("agora", "aa1", "Vá para um local seguro e ligue 190. Se não puder ligar com segurança, peça a alguém próximo que acione a polícia. Não tente investigar ou encontrar a pessoa por conta própria.");
     }
+    add("agora", "aa0", "Você não precisa enfrentar isso sozinho. Não negocie sob pressão, não marque encontro e não confronte quem está ameaçando você.");
+    if (has("tipo", "violencia") && !has("perigo", "sim"))
+      add("agora", "aa7", "Não aceite encontros e não confronte a pessoa. Avise alguém de confiança, evite ficar sozinho e preserve as mensagens. Se a pessoa se aproximar, souber onde você está ou o risco mudar, vá para um local seguro e ligue 190.");
+    if (has("tipo", "violencia"))
+      add("agora", "aa8", "Se a ameaça vem de parceiro, ex-parceiro ou alguém da família, ligue também 180 — Central de Atendimento à Mulher, gratuita e 24 horas — para orientação e medidas de proteção.");
     if (has("tipo", "intimidade")) {
       add("agora", "aa4", "Não pague e não envie novas imagens ou favores. Ceder não garante que o material será apagado e pode gerar novas exigências. A culpa não é sua.");
       add("agora", "aa5", "Antes de bloquear, preserve provas: tire prints das ameaças, do perfil, do número e das exigências. Não compartilhe as imagens íntimas com outras pessoas para tentar provar o caso.");
+      add("agora", "aa9", "Se você tem menos de 18 anos: procure agora um adulto de confiança. Você é a vítima e não fez nada de errado — quem ameaça é que está cometendo um crime grave. Também dá para ligar 100 (Disque Direitos Humanos, gratuito) para orientação e denúncia.");
     }
     if (!a.tipo || has("tipo", "outra") || has("perigo", "incerto"))
       add("agora", "aa_generic", "Conte agora a alguém de confiança e mostre apenas as mensagens de ameaça. Essa pessoa pode ajudar a avaliar o risco e acionar a polícia sem que você precise decidir sozinho.");
     if (has("cedeu", "dinheiro"))
       add("agora", "aa6", "Como você enviou dinheiro, avise imediatamente a instituição por onde o valor saiu. Depois, refaça esta triagem em “Paguei, transferi ou fiz um Pix” para receber os passos do meio de pagamento.");
+    if (has("cedeu", "conteudo"))
+      add("agora", "aa10", "Se você já enviou mais imagens ou informações, não se culpe — pare de responder agora. Cada nova exigência mostra que ceder não encerra a ameaça.");
     add("hoje", "ah1", "Registre um boletim de ocorrência e leve as provas preservadas. Se houver risco acontecendo agora, use o 190 em vez de esperar pelo registro online.");
-    if (has("tipo", "intimidade")) {
+    if (has("tipo", "intimidade"))
       add("hoje", "ah2", "Denuncie o perfil e a ameaça na própria plataforma depois de guardar as provas. Se o conteúdo já foi publicado, solicite também a remoção por divulgação sem consentimento.");
-      add("hoje", "ah3", "Se você tem menos de 18 anos, procure imediatamente um adulto de confiança. Produzir ou divulgar imagens sexuais de crianças e adolescentes é crime, mesmo quando a imagem foi enviada pela própria vítima.");
-    }
     add("depois", "ad1", "Mantenha pessoas de confiança informadas e revise a privacidade das suas contas. Bloqueie o contato depois de preservar as provas e fazer as denúncias necessárias.");
   }
 
